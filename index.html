@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Mon site premium</title>
+  <script src="https://paywall.unlock-protocol.com/static/unlock.latest.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Bienvenue sur mon site premium 🚀</h1>
+    <div id="content-locked">
+      <p>Ce contenu est réservé aux abonnés.</p>
+      <button id="unlock-button">Se connecter avec mon Wallet</button>
+    </div>
+    <div id="content-unlocked" style="display:none;">
+      <h2>Dashboard Premium 🎉</h2>
+      <p>Tu as accès à ton espace réservé !</p>
+    </div>
+  </div>
+
+  <script>
+    // Config Unlock
+    var unlockProtocolConfig = {
+      network: 11155111, // Sepolia
+      locks: {
+        "0x666D7a833283e4bB13b31d231711eBA3C7265C36": {
+          network: 11155111,
+          name: "Abonnement 1 mois (24 USDC)"
+        },
+        "0xLOCK_6_MOIS": {
+          network: 11155111,
+          name: "Abonnement 6 mois (120 USDC)"
+        },
+        "0xLOCK_12_MOIS": {
+          network: 11155111,
+          name: "Abonnement 12 mois (200 USDC)"
+        }
+      },
+      icon: "https://ton-site.com/logo.png", // optionnel
+      callToAction: {
+        default: "Choisis ton abonnement pour accéder au contenu premium."
+      }
+    };
+
+    // Gestion affichage selon état (abonné ou non)
+    window.addEventListener('unlockProtocol.status', function(event) {
+      if (event.detail.state === 'unlocked') {
+        document.getElementById('content-locked').style.display = 'none';
+        document.getElementById('content-unlocked').style.display = 'block';
+      } else {
+        document.getElementById('content-locked').style.display = 'block';
+        document.getElementById('content-unlocked').style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
