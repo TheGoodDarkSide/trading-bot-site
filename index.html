@@ -4,15 +4,47 @@
   <meta charset="UTF-8">
   <title>Mon site premium</title>
   <script src="https://paywall.unlock-protocol.com/static/unlock.latest.min.js"></script>
-  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      text-align: center;
+      padding: 50px;
+    }
+
+    .container {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      max-width: 600px;
+      margin: auto;
+    }
+
+    button {
+      background: #4f46e5;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background: #4338ca;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
     <h1>Bienvenue sur mon site premium 🚀</h1>
+
     <div id="content-locked">
       <p>Ce contenu est réservé aux abonnés.</p>
-      <button id="unlock-button">Se connecter avec mon Wallet</button>
+      <button id="unlock-button">Se connecter / S'abonner</button>
     </div>
+
     <div id="content-unlocked" style="display:none;">
       <h2>Dashboard Premium 🎉</h2>
       <p>Tu as accès à ton espace réservé !</p>
@@ -21,7 +53,7 @@
 
   <script>
     // Config Unlock
-    var unlockProtocolConfig = {
+    window.unlockProtocolConfig = {
       network: 11155111, // Sepolia
       locks: {
         "0x666D7a833283e4bB13b31d231711eBA3C7265C36": {
@@ -37,13 +69,18 @@
           name: "Abonnement 12 mois (200 USDC)"
         }
       },
-      icon: "https://ton-site.com/logo.png", // optionnel
+      icon: "https://ton-site.com/logo.png",
       callToAction: {
         default: "Choisis ton abonnement pour accéder au contenu premium."
       }
     };
 
-    // Gestion affichage selon état (abonné ou non)
+    // Bouton personnalisé pour ouvrir le checkout Unlock
+    document.getElementById('unlock-button').addEventListener('click', function() {
+      window.unlockProtocol && window.unlockProtocol.loadCheckoutModal();
+    });
+
+    // Écoute du statut Unlock (abonné ou non)
     window.addEventListener('unlockProtocol.status', function(event) {
       if (event.detail.state === 'unlocked') {
         document.getElementById('content-locked').style.display = 'none';
